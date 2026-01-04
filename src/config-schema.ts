@@ -1,4 +1,4 @@
-import {z} from "zod"
+import { z } from "zod"
 
 const upstreamSchema = z.object({
     id: z.string(),
@@ -26,3 +26,5 @@ const serverSchema = z.object({
 export const rootConfigSchema = z.object({
     server: serverSchema,
 })
+
+export type ConfigSchemaType = z.infer<typeof rootConfigSchema>

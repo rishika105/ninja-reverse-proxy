@@ -1,17 +1,8 @@
 import { program } from "commander";
 import { parseYAMLConfig, validateConfig } from "./config.js";
+import os from "node:os"
+import { createServer } from "./server.js";
 
-interface CreateServerConfig {
-    port: number;
-    workerCount: number;
-}
-
-async function createServer(config:CreateServerConfig) {
-    const {workerCount} = config;
-
-    const workers = new Array(workerCount);
-    
-}
 
 async function main() {
     program.option('--config <path>');
@@ -19,11 +10,11 @@ async function main() {
 
     const options = program.opts();
 
-    if(options && 'config' in options){
+    if (options && 'config' in options) {
         const validatedConfig = await validateConfig(await parseYAMLConfig(options.config))
+        //automatcially takes the number of cpus to spin no of workers for maximum hardware utilization
+        await createServer({ port: validatedConfig.server.listen, workerCount: validatedConfig.server.workers ?? os.cpus().length, config: validatedConfig })
     }
-
-
 }
 
 main();
