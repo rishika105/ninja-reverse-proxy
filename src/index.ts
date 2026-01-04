@@ -12,7 +12,7 @@ async function main() {
 
     if (options && 'config' in options) {
         const validatedConfig = await validateConfig(await parseYAMLConfig(options.config))
-        //automatcially takes the number of cpus to spin no of workers for maximum hardware utilization
+        //provided else automatcially takes the number of cpus to spin no of workers for maximum hardware utilization
         await createServer({ port: validatedConfig.server.listen, workerCount: validatedConfig.server.workers ?? os.cpus().length, config: validatedConfig })
     }
 }
